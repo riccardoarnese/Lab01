@@ -19,6 +19,9 @@ import javafx.scene.control.TextField;
 public class ParoleController {
 	
 	Parole elenco ;
+	double ti ;
+	double tf;
+	
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -37,15 +40,70 @@ public class ParoleController {
 
     @FXML // fx:id="btnInserisci"
     private Button btnInserisci; // Value injected by FXMLLoader
+    
+    @FXML
+    private TextArea txtTime;
+    
+    @FXML
+    private Button btncancella;
+
+    @FXML
+    void doCancel(ActionEvent event) {
+    	ti= System.nanoTime();
+    	String temp= txtResult.getSelectedText().trim();
+    	
+    	if(temp.length()!=0)
+    		elenco.rimuoviParola(temp);
+    	
+    	txtParola.clear();
+    	txtResult.clear();
+    	txtTime.clear();
+    	
+    	for (String st : elenco.getElenco())
+    		txtResult.appendText(st+"\n");
+    	
+    	tf=System.nanoTime();
+    	txtTime.appendText("Tempo di esecuzione: "+String.valueOf((tf-ti)*1000000000)+" secondi");
+    }
 
     @FXML
     void doInsert(ActionEvent event) {
+    	
+    	ti= System.nanoTime();
+    	
+    	String temp = txtParola.getText().trim();
+    	
+    	if(temp.length()!=0)
+    	{
+    		elenco.addParola(temp);
+    		
+    	}
+    	txtParola.clear();
+    	txtResult.clear();
+    	txtTime.clear();
+    	
+   
+    
+	for (String st : elenco.getElenco())
+		txtResult.appendText(st+"\n");
+	tf= System.nanoTime();
+	txtTime.appendText("Tempo di esecuzione: "+String.valueOf((tf-ti)*1000000000)+" secondi");
+    	
+    	
     	// TODO
     }
     
     @FXML
     void doReset(ActionEvent event) {
+    	ti= System.nanoTime();
+    	
     	// TODO
+    	elenco.reset();
+    	txtParola.clear();
+    	txtResult.clear();
+    	txtTime.clear();
+    	tf= System.nanoTime();
+    	txtTime.appendText("Tempo di esecuzione: "+String.valueOf((tf-ti)*1000000000)+" secondi");
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
